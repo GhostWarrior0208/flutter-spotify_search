@@ -14,11 +14,16 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+Artist _$ArtistFromJson(Map<String, dynamic> json) {
+  return _Artist.fromJson(json);
+}
+
 /// @nodoc
 mixin _$Artist {
   String get imageUrl => throw _privateConstructorUsedError;
   String get artistName => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $ArtistCopyWith<Artist> get copyWith => throw _privateConstructorUsedError;
 }
@@ -96,9 +101,12 @@ class __$$_ArtistCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_Artist implements _Artist {
   const _$_Artist({required this.imageUrl, required this.artistName});
+
+  factory _$_Artist.fromJson(Map<String, dynamic> json) =>
+      _$$_ArtistFromJson(json);
 
   @override
   final String imageUrl;
@@ -121,6 +129,7 @@ class _$_Artist implements _Artist {
                 other.artistName == artistName));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, imageUrl, artistName);
 
@@ -129,12 +138,21 @@ class _$_Artist implements _Artist {
   @pragma('vm:prefer-inline')
   _$$_ArtistCopyWith<_$_Artist> get copyWith =>
       __$$_ArtistCopyWithImpl<_$_Artist>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_ArtistToJson(
+      this,
+    );
+  }
 }
 
 abstract class _Artist implements Artist {
   const factory _Artist(
       {required final String imageUrl,
       required final String artistName}) = _$_Artist;
+
+  factory _Artist.fromJson(Map<String, dynamic> json) = _$_Artist.fromJson;
 
   @override
   String get imageUrl;

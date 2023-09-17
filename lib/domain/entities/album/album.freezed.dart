@@ -14,6 +14,10 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+Album _$AlbumFromJson(Map<String, dynamic> json) {
+  return _Album.fromJson(json);
+}
+
 /// @nodoc
 mixin _$Album {
   String get imageUrl => throw _privateConstructorUsedError;
@@ -22,6 +26,7 @@ mixin _$Album {
   List<String> get artistNames => throw _privateConstructorUsedError;
   String get releaseDate => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $AlbumCopyWith<Album> get copyWith => throw _privateConstructorUsedError;
 }
@@ -138,7 +143,7 @@ class __$$_AlbumCopyWithImpl<$Res> extends _$AlbumCopyWithImpl<$Res, _$_Album>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_Album implements _Album {
   const _$_Album(
       {required this.imageUrl,
@@ -147,6 +152,9 @@ class _$_Album implements _Album {
       required final List<String> artistNames,
       required this.releaseDate})
       : _artistNames = artistNames;
+
+  factory _$_Album.fromJson(Map<String, dynamic> json) =>
+      _$$_AlbumFromJson(json);
 
   @override
   final String imageUrl;
@@ -187,6 +195,7 @@ class _$_Album implements _Album {
                 other.releaseDate == releaseDate));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, imageUrl, albumType, albumName,
       const DeepCollectionEquality().hash(_artistNames), releaseDate);
@@ -196,6 +205,13 @@ class _$_Album implements _Album {
   @pragma('vm:prefer-inline')
   _$$_AlbumCopyWith<_$_Album> get copyWith =>
       __$$_AlbumCopyWithImpl<_$_Album>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_AlbumToJson(
+      this,
+    );
+  }
 }
 
 abstract class _Album implements Album {
@@ -205,6 +221,8 @@ abstract class _Album implements Album {
       required final String albumName,
       required final List<String> artistNames,
       required final String releaseDate}) = _$_Album;
+
+  factory _Album.fromJson(Map<String, dynamic> json) = _$_Album.fromJson;
 
   @override
   String get imageUrl;

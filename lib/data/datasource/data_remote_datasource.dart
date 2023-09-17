@@ -27,15 +27,7 @@ class DataRemoteDataSourceImpl implements DataRemoteDataSource {
     final decodedRes = jsonDecode(response);
     List<dynamic> items = decodedRes['albums']['items'] as List;
     for (var item in items) {
-      albums.add(Album(
-        imageUrl: item['images'][0]['url'],
-        albumName: item['name'],
-        albumType: item['album_type'],
-        artistNames: (item['artists'] as List)
-            .map((artist) => artist['name'] as String)
-            .toList(),
-        releaseDate: item['release_date'],
-      ));
+      albums.add(Album.fromJson(item as Map<String, dynamic>));
     }
     return albums;
   }
@@ -45,10 +37,7 @@ class DataRemoteDataSourceImpl implements DataRemoteDataSource {
     final decodedRes = jsonDecode(response);
     List<dynamic> items = decodedRes['artists']['items'] as List;
     for (var item in items) {
-      artists.add(Artist(
-        imageUrl: (item['images'] as List).isNotEmpty ? item['images'][0]['url'] : '',
-        artistName: item['name'],
-      ));
+      artists.add(Artist.fromJson(item as Map<String, dynamic>));
     }
     return artists;
   }
