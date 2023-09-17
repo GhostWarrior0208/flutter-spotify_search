@@ -8,7 +8,7 @@ class Token with _$Token {
   const factory Token({
     required String accessToken,
     required String tokenType,
-    required int expiresIn,
+    required DateTime expiresIn,
   }) = _Token;
 
   factory Token.fromJson(Map<String, dynamic> json) => _$TokenFromJson(json);

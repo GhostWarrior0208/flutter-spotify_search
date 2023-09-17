@@ -1,0 +1,4 @@
+enum DataCategory {
+  album,
+  artist,
+}

@@ -17,7 +17,7 @@ class AppColors {
   static const Color lightGrey = Color.fromARGB(255, 108, 112, 115);
 
   /// Extra Light grey color
-  static const Color extraLightGrey = Color.fromARGB(255, 201, 202, 203);
+  static const Color extraLightGrey = Color.fromARGB(255, 164, 166, 168);
 
   /// Light green color
   static const Color green = Color.fromARGB(255, 25, 150, 37);

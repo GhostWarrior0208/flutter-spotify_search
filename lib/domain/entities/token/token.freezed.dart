@@ -22,7 +22,7 @@ Token _$TokenFromJson(Map<String, dynamic> json) {
 mixin _$Token {
   String get accessToken => throw _privateConstructorUsedError;
   String get tokenType => throw _privateConstructorUsedError;
-  int get expiresIn => throw _privateConstructorUsedError;
+  DateTime get expiresIn => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +34,7 @@ abstract class $TokenCopyWith<$Res> {
   factory $TokenCopyWith(Token value, $Res Function(Token) then) =
       _$TokenCopyWithImpl<$Res, Token>;
   @useResult
-  $Res call({String accessToken, String tokenType, int expiresIn});
+  $Res call({String accessToken, String tokenType, DateTime expiresIn});
 }
 
 /// @nodoc
@@ -66,7 +66,7 @@ class _$TokenCopyWithImpl<$Res, $Val extends Token>
       expiresIn: null == expiresIn
           ? _value.expiresIn
           : expiresIn // ignore: cast_nullable_to_non_nullable
-              as int,
+              as DateTime,
     ) as $Val);
   }
 }
@@ -77,7 +77,7 @@ abstract class _$$_TokenCopyWith<$Res> implements $TokenCopyWith<$Res> {
       __$$_TokenCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String accessToken, String tokenType, int expiresIn});
+  $Res call({String accessToken, String tokenType, DateTime expiresIn});
 }
 
 /// @nodoc
@@ -105,7 +105,7 @@ class __$$_TokenCopyWithImpl<$Res> extends _$TokenCopyWithImpl<$Res, _$_Token>
       expiresIn: null == expiresIn
           ? _value.expiresIn
           : expiresIn // ignore: cast_nullable_to_non_nullable
-              as int,
+              as DateTime,
     ));
   }
 }
@@ -126,7 +126,7 @@ class _$_Token implements _Token {
   @override
   final String tokenType;
   @override
-  final int expiresIn;
+  final DateTime expiresIn;
 
   @override
   String toString() {
@@ -169,7 +169,7 @@ abstract class _Token implements Token {
   const factory _Token(
       {required final String accessToken,
       required final String tokenType,
-      required final int expiresIn}) = _$_Token;
+      required final DateTime expiresIn}) = _$_Token;
 
   factory _Token.fromJson(Map<String, dynamic> json) = _$_Token.fromJson;
 
@@ -178,7 +178,7 @@ abstract class _Token implements Token {
   @override
   String get tokenType;
   @override
-  int get expiresIn;
+  DateTime get expiresIn;
   @override
   @JsonKey(ignore: true)
   _$$_TokenCopyWith<_$_Token> get copyWith =>

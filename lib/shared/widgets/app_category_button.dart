@@ -18,19 +18,14 @@ class AppCategoryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
-      style: ButtonStyle(
-        side: actived ? MaterialStateProperty.all<BorderSide>(
-              const BorderSide(color: AppColors.lightGreen),
-            )
-            : MaterialStateProperty.all<BorderSide>(
-              const BorderSide(color: AppColors.lightGrey),
-            ),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
+      style: ElevatedButton.styleFrom(
+        side: actived ? const BorderSide(color: AppColors.lightGreen)
+            : const BorderSide(color: AppColors.lightGrey),
+        shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-        ),
-        backgroundColor: actived ? MaterialStateProperty.all<Color>(AppColors.green) : MaterialStateProperty.all<Color>(Colors.black),
+        elevation: actived ? 5 : 0,
+        backgroundColor: actived ? AppColors.green: Colors.black,
       ),
       child: Text(
         text,

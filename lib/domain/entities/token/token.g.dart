@@ -8,14 +8,14 @@ part of 'token.dart';
 
 // ignore: non_constant_identifier_names
 _$_Token _$$_TokenFromJson(Map<String, dynamic> json) => _$_Token(
-      accessToken: json['accessToken'] as String,
-      tokenType: json['tokenType'] as String,
-      expiresIn: json['expiresIn'] as int,
+      accessToken: json['access_token'] as String,
+      tokenType: json['token_type'] as String,
+      expiresIn: DateTime.now().add(const Duration(seconds: 3600)),
     );
 
 // ignore: non_constant_identifier_names
 Map<String, dynamic> _$$_TokenToJson(_$_Token instance) => <String, dynamic>{
-      'accessToken': instance.accessToken,
-      'tokenType': instance.tokenType,
-      'expiresIn': instance.expiresIn,
+      'access_token': instance.accessToken,
+      'token_type': instance.tokenType,
+      'expires_in': 3600,
     };

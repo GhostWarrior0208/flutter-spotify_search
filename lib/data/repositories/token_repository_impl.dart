@@ -11,8 +11,10 @@ class TokenRepositoryImpl implements TokenRepository {
   TokenRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<Either<Failure, Token>> getToken(
-      {required String clientId, required String clientSecret}) async {
+  Future<Either<Failure, Token>> getToken({
+    required String clientId,
+    required String clientSecret,
+  }) async {
     try {
       final token = await remoteDataSource.getToken(
         clientId: clientId,

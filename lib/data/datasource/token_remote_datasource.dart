@@ -34,14 +34,9 @@ class TokenRemoteDataSourceImpl implements TokenRemoteDataSource {
           'grant_type': 'client_credentials',
         },
       );
-      final decodedRes = jsonDecode(response.body);
       switch (response.statusCode) {
         case 200:
-          return Token(
-            accessToken: decodedRes['access_token'],
-            tokenType: decodedRes['token_type'],
-            expiresIn: decodedRes['expires_in'],
-          );
+          return Token.fromJson(jsonDecode(response.body));
         case 400:
           throw ServerException(message: 'Bad Request');
         case 401:
@@ -51,8 +46,8 @@ class TokenRemoteDataSourceImpl implements TokenRemoteDataSource {
         default:
           throw ServerException(message: 'Error');
       }
-    } on TypeError catch (_) {
-      throw CastException(message: 'Cast Error');
+    } on TypeError catch (e) {
+      throw CastException(message: e.toString());
     } on UnsupportedError catch (_) {
       throw ServerException(message: 'Server Error');
     } catch (e) {
