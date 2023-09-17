@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_spotify_search/shared/constants/app_enums.dart';
+import 'package:flutter_spotify_search/shared/constants/app_strings.dart';
 import 'package:flutter_spotify_search/shared/exception.dart';
 import 'package:flutter_spotify_search/shared/failure.dart';
 import 'package:flutter_spotify_search/domain/repositories/data_repository.dart';
@@ -36,7 +37,7 @@ class DataRepositoryImpl implements DataRepository {
     } on CastException catch (e) {
       return Left(CastFailure(message: e.message));
     } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
+      return Left(ServerFailure(message: AppStrings.badRequest));
     }
   }
 }

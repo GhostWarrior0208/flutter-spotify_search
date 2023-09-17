@@ -67,6 +67,10 @@ class ArtistsNotifier extends Notifier<GetArtistsState> {
     });
   }
 
+  void clearArtists() {
+    state = GetArtistsSuccess(artists: const []);
+  }
+
   @override
   GetArtistsState build() {
     return GetArtistsInitial();

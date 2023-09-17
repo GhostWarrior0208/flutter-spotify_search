@@ -68,13 +68,19 @@ class DataRemoteDataSourceImpl implements DataRemoteDataSource {
             return _getArtistsFromResponse(response: response.data);
           }
         case 400:
-          throw ServerException(message: AppStrings.noData);
+          throw ServerException(message: AppStrings.badRequest);
         case 401:
           throw ServerException(message: AppStrings.unathorized);
+        case 403:
+          throw ServerException(message: AppStrings.unathorized);
+        case 404:
+          throw ServerException(message: AppStrings.noData);
+        case 429:
+          throw ServerException(message: AppStrings.rateLimitErr);
         case 500:
-          throw ServerException(message: AppStrings.interServerErr);
+          throw ServerException(message: AppStrings.serverErr);
         default:
-          throw ServerException(message: AppStrings.error);
+          throw ServerException(message: AppStrings.unknownErr);
       }
     } on TypeError catch (_) {
       throw CastException(message: AppStrings.castErr);

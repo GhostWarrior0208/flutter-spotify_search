@@ -77,22 +77,27 @@ class _HomePageState extends ConsumerState<HomePage> {
                       if (tokenState.token.expiresIn.isBefore(DateTime.now())) {
                         ref.read(tokenProvider.notifier).getToken();
                       } else {
-                        if (selectedDataCategory == DataCategory.album) {
-                          ref.read(albumsProvider.notifier).searchData(
-                                accessToken: tokenState.token.accessToken,
-                                query: value,
-                                type: DataCategory.album,
-                                offset: 0,
-                                limit: 50,
-                              );
+                        if (value.isNotEmpty) {
+                          if (selectedDataCategory == DataCategory.album) {
+                            ref.read(albumsProvider.notifier).searchData(
+                                  accessToken: tokenState.token.accessToken,
+                                  query: value,
+                                  type: DataCategory.album,
+                                  offset: 0,
+                                  limit: 40,
+                                );
+                          } else {
+                            ref.read(artistsProvider.notifier).searchData(
+                                  accessToken: tokenState.token.accessToken,
+                                  query: value,
+                                  type: DataCategory.artist,
+                                  offset: 0,
+                                  limit: 40,
+                                );
+                          }
                         } else {
-                          ref.read(artistsProvider.notifier).searchData(
-                                accessToken: tokenState.token.accessToken,
-                                query: value,
-                                type: DataCategory.artist,
-                                offset: 0,
-                                limit: 50,
-                              );
+                          ref.read(albumsProvider.notifier).clearAlbums();
+                          ref.read(artistsProvider.notifier).clearArtists();
                         }
                       }
                     }
@@ -139,16 +144,17 @@ class _HomePageState extends ConsumerState<HomePage> {
                                 .state = DataCategory.album;
 
                             if (tokenState is GetTokenSuccess) {
-                              if (tokenState.token.expiresIn.isBefore(DateTime.now())) {
+                              if (tokenState.token.expiresIn
+                                  .isBefore(DateTime.now())) {
                                 ref.read(tokenProvider.notifier).getToken();
-                              } else{
+                              } else {
                                 ref.read(albumsProvider.notifier).searchData(
-                                    accessToken: tokenState.token.accessToken,
-                                    query: _queryController.text,
-                                    type: DataCategory.album,
-                                    offset: 0,
-                                    limit: 50,
-                                  );
+                                      accessToken: tokenState.token.accessToken,
+                                      query: _queryController.text,
+                                      type: DataCategory.album,
+                                      offset: 0,
+                                      limit: 40,
+                                    );
                               }
                             }
                           },
@@ -163,16 +169,17 @@ class _HomePageState extends ConsumerState<HomePage> {
                                 .state = DataCategory.artist;
 
                             if (tokenState is GetTokenSuccess) {
-                              if (tokenState.token.expiresIn.isBefore(DateTime.now())) {
+                              if (tokenState.token.expiresIn
+                                  .isBefore(DateTime.now())) {
                                 ref.read(tokenProvider.notifier).getToken();
                               } else {
                                 ref.read(artistsProvider.notifier).searchData(
-                                    accessToken: tokenState.token.accessToken,
-                                    query: _queryController.text,
-                                    type: DataCategory.artist,
-                                    offset: 0,
-                                    limit: 50,
-                                  );
+                                      accessToken: tokenState.token.accessToken,
+                                      query: _queryController.text,
+                                      type: DataCategory.artist,
+                                      offset: 0,
+                                      limit: 40,
+                                    );
                               }
                             }
                           },

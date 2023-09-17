@@ -67,6 +67,10 @@ class AlbumsNotifier extends Notifier<GetAlbumsState> {
     });
   }
 
+  void clearAlbums() {
+    state = GetAlbumsSuccess(albums: const []);
+  }
+
   @override
   GetAlbumsState build() {
     return GetAlbumsInitial();
