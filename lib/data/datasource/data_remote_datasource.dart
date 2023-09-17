@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_spotify_search/shared/constants/app_strings.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_spotify_search/shared/exception.dart';
 import 'package:flutter_spotify_search/shared/constants/app_enums.dart';
@@ -68,18 +69,18 @@ class DataRemoteDataSourceImpl implements DataRemoteDataSource {
             return _getArtistsFromResponse(response: response.body);
           }
         case 400:
-          throw ServerException(message: 'Sorry, no data..');
+          throw ServerException(message: AppStrings.noData);
         case 401:
-          throw ServerException(message: 'Unathorized');
+          throw ServerException(message: AppStrings.unathorized);
         case 500:
-          throw ServerException(message: 'Internal Server Error');
+          throw ServerException(message: AppStrings.interServerErr);
         default:
-          throw ServerException(message: 'Error');
+          throw ServerException(message: AppStrings.error);
       }
     } on TypeError catch (e) {
       throw CastException(message: e.toString());
     } on UnsupportedError catch (_) {
-      throw ServerException(message: 'Server Error');
+      throw ServerException(message: AppStrings.serverErr);
     } catch (e) {
       rethrow;
     }

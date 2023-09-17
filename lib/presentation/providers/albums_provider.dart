@@ -5,6 +5,7 @@ import 'package:flutter_spotify_search/data/repositories/data_repository_impl.da
 import 'package:flutter_spotify_search/domain/entities/album/album.dart';
 import 'package:flutter_spotify_search/domain/usecases/data_usecase.dart';
 import 'package:flutter_spotify_search/shared/constants/app_enums.dart';
+import 'package:flutter_spotify_search/shared/constants/app_strings.dart';
 import 'package:flutter_spotify_search/shared/failure.dart';
 
 final albumsProvider = NotifierProvider<AlbumsNotifier, GetAlbumsState>(
@@ -34,7 +35,7 @@ class AlbumsNotifier extends Notifier<GetAlbumsState> {
       case CastFailure:
         return (failure as CastFailure).message;
       default:
-        return 'Unknown error';
+        return AppStrings.unknownErr;
     }
   }
 
