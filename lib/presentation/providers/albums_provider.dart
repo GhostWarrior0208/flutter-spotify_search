@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spotify_search/data/datasource/data_remote_datasource.dart';
@@ -13,7 +14,7 @@ final albumsProvider = NotifierProvider<AlbumsNotifier, GetAlbumsState>(
     return AlbumsNotifier(
       usecase: DataUsecase(
           repository:
-              DataRepositoryImpl(remoteDataSource: DataRemoteDataSourceImpl())),
+              DataRepositoryImpl(remoteDataSource: DataRemoteDataSourceImpl(dio: Dio()))),
       storedAlbums: [],
     );
   },

@@ -1,6 +1,5 @@
-import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter_spotify_search/shared/constants/app_strings.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_spotify_search/shared/exception.dart';
 import 'package:flutter_spotify_search/shared/constants/app_enums.dart';
 import 'package:flutter_spotify_search/domain/entities/album/album.dart';
@@ -19,24 +18,23 @@ abstract class DataRemoteDataSource {
 }
 
 class DataRemoteDataSourceImpl implements DataRemoteDataSource {
+  final Dio dio;
   final baseUrl = 'https://api.spotify.com/v1/search';
 
-  DataRemoteDataSourceImpl();
+  DataRemoteDataSourceImpl({required this.dio});
 
-  List<Album> _getAlbumsFromResponse({required String response}) {
+  List<Album> _getAlbumsFromResponse({required Map<String, dynamic> response}) {
     List<Album> albums = [];
-    final decodedRes = jsonDecode(response);
-    List<dynamic> items = decodedRes['albums']['items'] as List;
+    List<dynamic> items = response['albums']['items'] as List;
     for (var item in items) {
       albums.add(Album.fromJson(item as Map<String, dynamic>));
     }
     return albums;
   }
 
-  List<Artist> _getArtistsFromResponse({required String response}) {
+  List<Artist> _getArtistsFromResponse({required Map<String, dynamic> response}) {
     List<Artist> artists = [];
-    final decodedRes = jsonDecode(response);
-    List<dynamic> items = decodedRes['artists']['items'] as List;
+    List<dynamic> items = response['artists']['items'] as List;
     for (var item in items) {
       artists.add(Artist.fromJson(item as Map<String, dynamic>));
     }
@@ -54,19 +52,20 @@ class DataRemoteDataSourceImpl implements DataRemoteDataSource {
     String includeExternal = '',
   }) async {
     try {
-      final response = await http.get(
-        Uri.parse(
-            '$baseUrl?q=$query&type=${type.name.toString()}&market=$market&limit=$limit&offset=$offset&include_external=$includeExternal'),
-        headers: <String, String>{
-          'Authorization': 'Bearer $accessToken',
-        },
+      final response = await dio.get(
+        '$baseUrl?q=$query&type=${type.name.toString()}&market=$market&limit=$limit&offset=$offset&include_external=$includeExternal',
+        options: Options(
+          headers: <String, String>{
+              'Authorization': 'Bearer $accessToken',
+            },
+        ),
       );
       switch (response.statusCode) {
         case 200:
           if (type == DataCategory.album) {
-            return _getAlbumsFromResponse(response: response.body);
+            return _getAlbumsFromResponse(response: response.data);
           } else {
-            return _getArtistsFromResponse(response: response.body);
+            return _getArtistsFromResponse(response: response.data);
           }
         case 400:
           throw ServerException(message: AppStrings.noData);
@@ -77,8 +76,8 @@ class DataRemoteDataSourceImpl implements DataRemoteDataSource {
         default:
           throw ServerException(message: AppStrings.error);
       }
-    } on TypeError catch (e) {
-      throw CastException(message: e.toString());
+    } on TypeError catch (_) {
+      throw CastException(message: AppStrings.castErr);
     } on UnsupportedError catch (_) {
       throw ServerException(message: AppStrings.serverErr);
     } catch (e) {

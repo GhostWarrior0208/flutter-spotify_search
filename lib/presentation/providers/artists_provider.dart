@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spotify_search/data/datasource/data_remote_datasource.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_spotify_search/data/repositories/data_repository_impl.da
 import 'package:flutter_spotify_search/domain/entities/artist/artist.dart';
 import 'package:flutter_spotify_search/domain/usecases/data_usecase.dart';
 import 'package:flutter_spotify_search/shared/constants/app_enums.dart';
+import 'package:flutter_spotify_search/shared/constants/app_strings.dart';
 import 'package:flutter_spotify_search/shared/failure.dart';
 
 final artistsProvider = NotifierProvider<ArtistsNotifier, GetArtistsState>(
@@ -12,7 +14,7 @@ final artistsProvider = NotifierProvider<ArtistsNotifier, GetArtistsState>(
     return ArtistsNotifier(
       usecase: DataUsecase(
           repository:
-              DataRepositoryImpl(remoteDataSource: DataRemoteDataSourceImpl())),
+              DataRepositoryImpl(remoteDataSource: DataRemoteDataSourceImpl(dio: Dio()))),
       storedArtists: [],
     );
   },
@@ -34,7 +36,7 @@ class ArtistsNotifier extends Notifier<GetArtistsState> {
       case CastFailure:
         return (failure as CastFailure).message;
       default:
-        return 'Unknown error';
+        return AppStrings.unknownErr;
     }
   }
 

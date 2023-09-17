@@ -1,9 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spotify_search/data/datasource/token_remote_datasource.dart';
 import 'package:flutter_spotify_search/data/repositories/token_repository_impl.dart';
 import 'package:flutter_spotify_search/domain/entities/token/token.dart';
 import 'package:flutter_spotify_search/domain/usecases/token_usecase.dart';
+import 'package:flutter_spotify_search/shared/constants/app_strings.dart';
 import 'package:flutter_spotify_search/shared/failure.dart';
 import 'package:flutter_spotify_search/config/config.dart';
 
@@ -12,7 +14,7 @@ final tokenProvider = NotifierProvider<TokenNotifier, GetTokenState>(
     return TokenNotifier(
         usecase: TokenUsecase(
             repository: TokenRepositoryImpl(
-                remoteDataSource: TokenRemoteDataSourceImpl())),
+                remoteDataSource: TokenRemoteDataSourceImpl(dio: Dio()))),
         storedToken: null,
         clientId: clientId,
         clientSecret: clientSecret,
@@ -39,7 +41,7 @@ class TokenNotifier extends Notifier<GetTokenState> {
       case CastFailure:
         return (failure as CastFailure).message;
       default:
-        return 'Unknown error';
+        return AppStrings.unknownErr;
     }
   }
 
