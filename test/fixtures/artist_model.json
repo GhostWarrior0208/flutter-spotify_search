@@ -1,0 +1,80 @@
+{
+  "artists": {
+    "artists": {
+      "href": "https://api.spotify.com/v1/search?query=angelina&type=artist&locale=en-US%2Cen%3Bq%3D0.9&offset=0&limit=2",
+      "items": [
+        {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/0iQDOaYEA5i9RAF0Z73iXb"
+          },
+          "followers": {
+            "href": null,
+            "total": 259415
+          },
+          "genres": ["contemporary vocal jazz"],
+          "href": "https://api.spotify.com/v1/artists/0iQDOaYEA5i9RAF0Z73iXb",
+          "id": "0iQDOaYEA5i9RAF0Z73iXb",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab6761610000e5eb43c0cf8e76a5b7a5330735cc",
+              "width": 640
+            },
+            {
+              "height": 320,
+              "url": "https://i.scdn.co/image/ab6761610000517443c0cf8e76a5b7a5330735cc",
+              "width": 320
+            },
+            {
+              "height": 160,
+              "url": "https://i.scdn.co/image/ab6761610000f17843c0cf8e76a5b7a5330735cc",
+              "width": 160
+            }
+          ],
+          "name": "Angelina Jordan",
+          "popularity": 48,
+          "type": "artist",
+          "uri": "spotify:artist:0iQDOaYEA5i9RAF0Z73iXb"
+        },
+        {
+          "external_urls": {
+            "spotify": "https://open.spotify.com/artist/1A6HBLulvBFzNtlMb7b08f"
+          },
+          "followers": {
+            "href": null,
+            "total": 70378
+          },
+          "genres": ["italian pop"],
+          "href": "https://api.spotify.com/v1/artists/1A6HBLulvBFzNtlMb7b08f",
+          "id": "1A6HBLulvBFzNtlMb7b08f",
+          "images": [
+            {
+              "height": 640,
+              "url": "https://i.scdn.co/image/ab6761610000e5eb957fc52a74e73c52fab9008e",
+              "width": 640
+            },
+            {
+              "height": 320,
+              "url": "https://i.scdn.co/image/ab67616100005174957fc52a74e73c52fab9008e",
+              "width": 320
+            },
+            {
+              "height": 160,
+              "url": "https://i.scdn.co/image/ab6761610000f178957fc52a74e73c52fab9008e",
+              "width": 160
+            }
+          ],
+          "name": "Angelina Mango",
+          "popularity": 59,
+          "type": "artist",
+          "uri": "spotify:artist:1A6HBLulvBFzNtlMb7b08f"
+        }
+      ],
+      "limit": 2,
+      "next": "https://api.spotify.com/v1/search?query=angelina&type=artist&locale=en-US%2Cen%3Bq%3D0.9&offset=2&limit=2",
+      "offset": 0,
+      "previous": null,
+      "total": 421
+    }
+  }
+}
