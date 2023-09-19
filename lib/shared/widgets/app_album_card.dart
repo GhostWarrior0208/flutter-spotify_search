@@ -23,10 +23,10 @@ class AppAlbumCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Image.network(
-          imageUrl,
-          fit: BoxFit.fill,
-        ),
+        // Image.network(
+        //   imageUrl,
+        //   fit: BoxFit.fill,
+        // ),
         AppSpaces.hSemiSmall,
         Text(
           albumName,

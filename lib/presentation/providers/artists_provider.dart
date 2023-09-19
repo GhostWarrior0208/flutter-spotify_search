@@ -62,7 +62,11 @@ class ArtistsNotifier extends Notifier<GetArtistsState> {
     results.fold((failure) {
       state = GetArtistsError(errorMessage: _getErrorMessage(failure));
     }, (data) {
-      storedArtists = data as List<Artist>;
+      if (offset == 0) {
+        storedArtists = data as List<Artist>;
+      } else {
+        storedArtists.addAll(data as List<Artist>);
+      }
       state = GetArtistsSuccess(artists: storedArtists);
     });
   }

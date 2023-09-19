@@ -1,20 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spotify_search/shared/constants/app_enums.dart';
 import 'package:flutter_spotify_search/shared/theme/app_colors.dart';
 import 'package:flutter_spotify_search/shared/widgets/app_album_card.dart';
 
 import '../providers/app_theme_mode_provider.dart';
+import '../providers/home_page_states_providers.dart';
 import '../providers/albums_provider.dart';
 
-class AlbumsList extends ConsumerWidget {
+class AlbumsList extends ConsumerStatefulWidget {
   const AlbumsList({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<AlbumsList> createState() => _AlbumsListState();
+}
+
+class _AlbumsListState extends ConsumerState<AlbumsList> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      double maxScroll = _scrollController.position.maxScrollExtent;
+      double currentScroll = _scrollController.position.pixels;
+      if (currentScroll == maxScroll) {
+        ref.read(albumsListScrollPositionProvider.notifier).state =
+            ScrollPos.bottom;
+      } else {
+        ref.read(albumsListScrollPositionProvider.notifier).state =
+            ScrollPos.middle;
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final albumsState = ref.watch(albumsProvider);
     final themeMode = ref.watch(appThemeModeProvider);
+    
     return albumsState is GetAlbumsSuccess
         ? GridView.builder(
+            controller: _scrollController,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               childAspectRatio: 0.69,

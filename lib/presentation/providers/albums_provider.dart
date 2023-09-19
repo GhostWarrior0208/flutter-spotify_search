@@ -9,6 +9,7 @@ import 'package:flutter_spotify_search/shared/constants/app_enums.dart';
 import 'package:flutter_spotify_search/shared/constants/app_strings.dart';
 import 'package:flutter_spotify_search/shared/failure.dart';
 
+
 final albumsProvider = NotifierProvider<AlbumsNotifier, GetAlbumsState>(
   () {
     return AlbumsNotifier(
@@ -62,7 +63,11 @@ class AlbumsNotifier extends Notifier<GetAlbumsState> {
     results.fold((failure) {
       state = GetAlbumsError(errorMessage: _getErrorMessage(failure));
     }, (albums) {
-      storedAlbums = albums as List<Album>;
+      if (offset == 0) {
+        storedAlbums = albums as List<Album>;
+      } else {
+        storedAlbums.addAll(albums as List<Album>);
+      }
       state = GetAlbumsSuccess(albums: storedAlbums);
     });
   }

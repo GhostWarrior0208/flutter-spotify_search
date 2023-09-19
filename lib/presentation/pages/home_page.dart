@@ -3,7 +3,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spotify_search/presentation/components/albums_list.dart';
 import 'package:flutter_spotify_search/presentation/components/artists_list.dart';
-import 'package:flutter_spotify_search/presentation/providers/artists_provider.dart';
 import 'package:flutter_spotify_search/shared/constants/app_enums.dart';
 import 'package:flutter_spotify_search/shared/constants/app_paddings.dart';
 import 'package:flutter_spotify_search/shared/constants/app_spaces.dart';
@@ -12,9 +11,10 @@ import 'package:flutter_spotify_search/shared/theme/app_colors.dart';
 import 'package:flutter_spotify_search/shared/widgets/app_category_button.dart';
 
 import '../providers/app_theme_mode_provider.dart';
-import '../providers/selected_data_category_provider.dart';
+import '../providers/home_page_states_providers.dart';
 import '../providers/token_provider.dart';
 import '../providers/albums_provider.dart';
+import '../providers/artists_provider.dart';
 
 @RoutePage()
 class HomePage extends ConsumerStatefulWidget {
@@ -26,10 +26,14 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
   late TextEditingController _queryController;
+  late int nextAlbumsOffset;
+  late int nextArtistsOffset;
 
   @override
   void initState() {
     super.initState();
+    nextAlbumsOffset = 0;
+    nextArtistsOffset = 0;
     _queryController = TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ref.read(tokenProvider.notifier).getToken();
@@ -39,8 +43,28 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     final themeMode = ref.watch(appThemeModeProvider);
-    final selectedDataCategory = ref.watch(selectedDataCategoryProvider);
     final tokenState = ref.watch(tokenProvider);
+    final selectedDataCategory = ref.watch(selectedDataCategoryProvider);
+    ref.listen<ScrollPos>(albumsListScrollPositionProvider, (previous, next) {
+      if (next == ScrollPos.bottom && tokenState is GetTokenSuccess) {
+        ref.read(albumsProvider.notifier).searchData(
+              accessToken: tokenState.token.accessToken,
+              query: _queryController.text,
+              type: DataCategory.album,
+              offset: ++nextAlbumsOffset,
+            );
+      }
+    });
+    ref.listen<ScrollPos>(artistsListScrollPositionProvider, (previous, next) {
+      if (next == ScrollPos.bottom && tokenState is GetTokenSuccess) {
+        ref.read(artistsProvider.notifier).searchData(
+              accessToken: tokenState.token.accessToken,
+              query: _queryController.text,
+              type: DataCategory.artist,
+              offset: ++nextArtistsOffset,
+            );
+      }
+    });
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -78,27 +102,24 @@ class _HomePageState extends ConsumerState<HomePage> {
                         ref.read(tokenProvider.notifier).getToken();
                       } else {
                         if (value.isNotEmpty) {
-                          if (selectedDataCategory == DataCategory.album) {
-                            ref.read(albumsProvider.notifier).searchData(
-                                  accessToken: tokenState.token.accessToken,
-                                  query: value,
-                                  type: DataCategory.album,
-                                  offset: 0,
-                                  limit: 40,
-                                );
-                          } else {
-                            ref.read(artistsProvider.notifier).searchData(
-                                  accessToken: tokenState.token.accessToken,
-                                  query: value,
-                                  type: DataCategory.artist,
-                                  offset: 0,
-                                  limit: 40,
-                                );
-                          }
+                          ref.read(albumsProvider.notifier).searchData(
+                                accessToken: tokenState.token.accessToken,
+                                query: value,
+                                type: DataCategory.album,
+                                offset: 0,
+                              );
+                          ref.read(artistsProvider.notifier).searchData(
+                                accessToken: tokenState.token.accessToken,
+                                query: value,
+                                type: DataCategory.artist,
+                                offset: 0,
+                              );
                         } else {
                           ref.read(albumsProvider.notifier).clearAlbums();
                           ref.read(artistsProvider.notifier).clearArtists();
                         }
+                        nextAlbumsOffset = 0;
+                        nextArtistsOffset = 0;
                       }
                     }
                     setState(() {});
@@ -142,21 +163,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                             ref
                                 .read(selectedDataCategoryProvider.notifier)
                                 .state = DataCategory.album;
-
-                            if (tokenState is GetTokenSuccess) {
-                              if (tokenState.token.expiresIn
-                                  .isBefore(DateTime.now())) {
-                                ref.read(tokenProvider.notifier).getToken();
-                              } else {
-                                ref.read(albumsProvider.notifier).searchData(
-                                      accessToken: tokenState.token.accessToken,
-                                      query: _queryController.text,
-                                      type: DataCategory.album,
-                                      offset: 0,
-                                      limit: 40,
-                                    );
-                              }
-                            }
                           },
                         ),
                         AppSpaces.wSemiSmall,
@@ -167,21 +173,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                             ref
                                 .read(selectedDataCategoryProvider.notifier)
                                 .state = DataCategory.artist;
-
-                            if (tokenState is GetTokenSuccess) {
-                              if (tokenState.token.expiresIn
-                                  .isBefore(DateTime.now())) {
-                                ref.read(tokenProvider.notifier).getToken();
-                              } else {
-                                ref.read(artistsProvider.notifier).searchData(
-                                      accessToken: tokenState.token.accessToken,
-                                      query: _queryController.text,
-                                      type: DataCategory.artist,
-                                      offset: 0,
-                                      limit: 40,
-                                    );
-                              }
-                            }
                           },
                         ),
                       ],
